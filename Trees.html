@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Trees Saved Counter</title>
+  <style>
+    body{margin:0; font-family:'Segoe UI', Roboto, Arial, sans-serif;}
+    #wrap{font-weight:700; font-size:36px; line-height:1.2; color:#174e2e; text-align:center; padding:8px 12px;}
+  </style>
+</head>
+<body>
+  <div id="wrap">We saved <span id="count" aria-live="polite">0</span> Trees so far!</div>
+  <script>
+    (function(){
+      const targetValue = 100;     // ← change this number if needed
+      const durationMs  = 1600;    // ← animation duration (ms)
+      const locale      = 'en-CA'; // ← number formatting
+      const el = document.getElementById('count');
+      let start=null;
+      function frame(ts){
+        if(start===null) start=ts;
+        const p=Math.min((ts-start)/durationMs,1);
+        el.textContent=Math.round(p*targetValue).toLocaleString(locale);
+        if(p<1) requestAnimationFrame(frame);
+      }
+      // Start when visible
+      if('IntersectionObserver' in window){
+        const io=new IntersectionObserver(es=>{
+          if(es.some(e=>e.isIntersecting)){ requestAnimationFrame(frame); io.disconnect(); }
+        }, {threshold:0.4});
+        io.observe(document.getElementById('wrap'));
+      } else {
+        requestAnimationFrame(frame);
+      }
+    })();
+  </script>
+</body>
+</html>
+``
