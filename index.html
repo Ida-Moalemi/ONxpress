@@ -3,139 +3,170 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trees Saved Header</title>
+  <title>Trees Saved – Gradient Card</title>
   <style>
-    :root{
-      --bg: #ffffff;
-      --text: #0f172a;            /* slate-900 */
-      --muted: #475569;           /* slate-600 */
-      --green: #1B5E20;           /* forest green */
-      --green-600: #2e7d32;
-      --card: #ffffff;
-      --ring: rgba(27,94,32,.18);
-      --shadow: 0 6px 20px rgba(2, 6, 23, 0.06);
-      --radius: 14px;
+    /* === Palette & radii (tuned to your screenshot) === */
+    :root {
+      --bg-deep: #0b1a3a;           /* page background: deep navy */
+      --grad-start: #27c6a3;        /* left: teal/green */
+      --grad-end:   #2454a6;        /* right: ocean blue */
+      --card-shadow: 0 14px 28px rgba(4, 18, 44, 0.35);
+      --inner-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+      --pill-radius: 22px;
+      --tile-radius: 14px;
+
+      --ink-strong: #e8fff6;        /* bright minty white for numbers */
+      --ink-muted:  rgba(255,255,255,0.78);
+      --ink-subtle: rgba(255,255,255,0.6);
+
+      --tile-bg: #0e214e;           /* left tile (logo) navy */
+      --tile-glow: rgba(39, 198, 163, 0.18);
     }
 
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-      color: var(--text);
-      background: linear-gradient(180deg, #E8F5E9 0%, #FFFFFF 30%);
-    }
-
-    /* Header */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      background: var(--bg);
-      border-bottom: 1px solid rgba(2, 6, 23, 0.04);
-      box-shadow: 0 2px 12px rgba(2,6,23,0.04);
-    }
-
-    .header-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 14px 20px;
+      min-height: 100vh;
       display: grid;
-      grid-template-columns: 1fr auto; /* only the stat box on the right */
-      align-items: center;
+      place-items: start center;
+      background:
+        radial-gradient(1200px 600px at 10% -20%, #142b5c 0%, transparent 65%),
+        radial-gradient(1000px 800px at 90% 120%, #0a1a3a 20%, transparent 70%),
+        var(--bg-deep);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      padding: 48px 18px;
     }
 
-    /* Trees Saved card */
-    .stat-card {
+    /* === The gradient card === */
+    .trees-card {
+      width: min(860px, 100%);
+      background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+      border-radius: var(--pill-radius);
+      box-shadow: var(--card-shadow);
+      padding: 18px;
       display: grid;
       grid-template-columns: auto 1fr;
       align-items: center;
-      gap: 12px;
-      background: var(--card);
-      border: 1px solid rgba(2, 6, 23, 0.06);
-      border-radius: var(--radius);
-      padding: 12px 16px;
-      box-shadow: var(--shadow);
-      min-width: 240px;
+      gap: 18px;
+      position: relative;
+      isolation: isolate;
     }
 
-    .stat-icon {
-      height: 36px;
-      width: 36px;
-      display: inline-grid;
+    /* subtle inner shine like the screenshot */
+    .trees-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: var(--inner-shadow);
+      pointer-events: none;
+    }
+
+    /* === Left “logo” tile (replaced with our new SVG mark) === */
+    .logo-tile {
+      background: linear-gradient(145deg, var(--tile-bg), #0a1f46);
+      border-radius: var(--tile-radius);
+      width: 64px;
+      height: 64px;
+      display: grid;
       place-items: center;
-      border-radius: 999px;
-      background: rgba(27,94,32,0.08);
-      color: var(--green);
-      border: 1px solid rgba(27,94,32,0.12);
-      flex-shrink: 0;
-      font-size: 18px;
-      line-height: 1;
+      box-shadow:
+        0 10px 22px rgba(0,0,0,0.35),
+        0 0 0 8px var(--tile-glow);
+      border: 1px solid rgba(255,255,255,0.06);
     }
 
+    /* SVG sizing and color */
+    .tree-logo {
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+    /* Logo colors (icon = mint, trunk = deep mint) */
+    .tree-leaf { fill: #6ff1d3; }
+    .tree-trunk { fill: #c8ffee; opacity: 0.9; }
+
+    /* === Right content === */
+    .stat-wrap {
+      display: grid;
+      gap: 6px;
+    }
     .stat-label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-bottom: 2px;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-subtle);
+      font-weight: 700;
     }
-
+    .stat-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
     .stat-number {
+      color: var(--ink-strong);
+      font-weight: 900;
+      font-size: clamp(28px, 5.2vw, 44px);
+      line-height: 1;
       font-variant-numeric: tabular-nums;
-      font-weight: 800;
-      font-size: 1.4rem;
-      color: var(--green-600);
-      letter-spacing: .2px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .stat-unit {
+      color: var(--ink-muted);
+      font-weight: 700;
+      font-size: clamp(16px, 2.1vw, 20px);
     }
 
-    /* Mobile: center the stat card and let it fill width */
-    @media (max-width: 640px) {
-      .header-inner {
-        grid-template-columns: 1fr;
+    /* Mobile spacing */
+    @media (max-width: 520px) {
+      .trees-card {
+        grid-template-columns: auto 1fr;
+        gap: 14px;
+        padding: 14px;
+        border-radius: 18px;
       }
-      .stat-card {
-        justify-self: stretch;
-        width: 100%;
-      }
+      .logo-tile { width: 56px; height: 56px; border-radius: 12px; }
     }
 
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
-      .countup-animated {
-        transition: none !important;
-        animation: none !important;
-      }
-    }
-
-    /* Focus ring for accessibility when tabbing */
-    .focus-ring:focus-visible {
-      outline: 3px solid var(--ring);
-      outline-offset: 2px;
-      border-radius: 10px;
+      .countup-animated { animation: none !important; transition: none !important; }
     }
   </style>
 </head>
 <body>
 
-  <header class="site-header" role="banner">
-    <div class="header-inner">
-      <!-- (no logo) -->
+  <!-- Gradient stat card -->
+  <section class="trees-card" aria-label="Trees saved">
+    <!-- Left tile: NEW inline SVG logo -->
+    <div class="logo-tile" aria-hidden="true">
+      <!-- Simple geometric tree mark (inline SVG so you can recolor with CSS) -->
+      <svg class="tree-logo" viewBox="0 0 24 24" role="img" aria-label="Tree logo">
+        <!-- canopy -->
+        <path class="tree-leaf" d="M12 3c3.314 0 6 2.686 6 6 0 2.052-1.025 3.863-2.584 4.93a1 1 0 0 0-.416.82V16a1 1 0 0 1-1 1h-3v-2.25a1 1 0 0 0-.41-.81C9.02 13.86 8 12.05 8 9.999 8 5.686 9.343 3 12 3z"/>
+        <!-- trunk -->
+        <rect class="tree-trunk" x="11" y="15.5" width="2" height="4" rx="1"/>
+      </svg>
+    </div>
 
-      <!-- Trees Saved box -->
-      <div class="stat-card focus-ring" role="status" aria-live="polite" tabindex="0" aria-label="Trees saved counter">
-        <div class="stat-icon" aria-hidden="true">🌳</div>
-        <div>
-          <div class="stat-label">Trees Saved</div>
-          <div class="stat-number">
-            <span id="treesCount" class="countup-animated"
-                  data-target="100"
-                  data-duration="1600"
-                  data-suffix="">
-              0
-            </span>
-          </div>
+    <!-- Right content -->
+    <div class="stat-wrap">
+      <div class="stat-label">Trees Saved</div>
+      <div class="stat-row">
+        <div class="stat-number">
+          <span id="treesCount"
+                class="countup-animated"
+                data-target="300"
+                data-duration="1500"
+                data-suffix="">
+            0
+          </span>
         </div>
+        <div class="stat-unit">trees</div>
       </div>
     </div>
-  </header>
+  </section>
 
   <script>
     (function () {
@@ -145,42 +176,33 @@
       const prefersReduced =
         window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      const target = Number(el.getAttribute('data-target') || 100);
-      const duration = prefersReduced ? 0 : Number(el.getAttribute('data-duration') || 1600);
-      const suffix = el.getAttribute('data-suffix') || '';
+      const target   = Number(el.getAttribute('data-target') || 300);
+      const duration = prefersReduced ? 0 : Number(el.getAttribute('data-duration') || 1500);
+      const suffix   = el.getAttribute('data-suffix') || '';
 
-      // Easing function for a smooth finish
-      function easeOutQuad(t) { return t * (2 - t); }
+      // Smooth ease-out for the finish
+      const easeOutQuad = t => t * (2 - t);
 
-      function formatNumber(n) {
-        return n.toLocaleString(undefined);
-      }
+      const format = n => n.toLocaleString(undefined);
 
-      function animateCountUp(node, to, ms) {
-        if (ms <= 0) {
-          node.textContent = formatNumber(to) + suffix;
-          return;
-        }
+      function countUp(node, to, ms) {
+        if (ms <= 0) { node.textContent = format(to) + suffix; return; }
         const start = performance.now();
         const from = 0;
 
         function frame(now) {
-          const elapsed = now - start;
-          const t = Math.min(1, elapsed / ms);
+          const t = Math.min(1, (now - start) / ms);
           const val = Math.round(from + (to - from) * easeOutQuad(t));
-          node.textContent = formatNumber(val) + suffix;
-
-          if (t < 1) {
-            requestAnimationFrame(frame);
-          } else {
-            node.textContent = formatNumber(to) + suffix;
-          }
+          node.textContent = format(val) + suffix;
+          if (t < 1) requestAnimationFrame(frame);
+          else node.textContent = format(to) + suffix;
         }
         requestAnimationFrame(frame);
       }
 
-      animateCountUp(el, target, duration);
+      countUp(el, target, duration);
     })();
   </script>
 </body>
 </html>
+``
